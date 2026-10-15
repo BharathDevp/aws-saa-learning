@@ -53,5 +53,22 @@ Amazon data centers within region are linked using high speed fiber network of 4
 4. Performance efficiency:
    - Match service sizing to workload requirements
    - monitor performance metrics and adjust sizing accordingly
-   
+5. Cost Optimization:
+   - Remove unused resource or atleast shutdown them
+
+# AWS Service Matching:
+
+- Business needs assessment
+- Familiarity with AWS service offerings
+- Network requirements: Assess each one of below while designing application
+  - VPCs, Subnets: Assessing how many VPCs and Subnets required for our application
+  - VPC peering: to allow direct VPC to VPC communication instead of communicate over public network
+  - VPN: To access AWS cloud over encrypted tunnel from outside world
+  - Direct connect: Direct communication channel to talk to AWS cloud
+  - HTTPS: To talk to service endpoints hosted on AWS
+  - Network/Threat monitoring: GaurdDuty, CloudWatch network metrics to make sure everything working as expected
+- Compute requirements
+- Storage requirements
+- Monitoring and Security requirements
+- AWS service sprawl reduction - Remove unused resources those are running in background
 
