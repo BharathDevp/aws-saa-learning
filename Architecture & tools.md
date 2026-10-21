@@ -1,4 +1,4 @@
-### Architecture & tools
+# Architecture & tools
 
 AWS Global infrastructure:
 - 200+ IT services available
@@ -14,7 +14,7 @@ We can connect to AWS cloud using
 - VPN from individual devices, which established encrypted tunnel to AWS cloud
 Amazon data centers within region are linked using high speed fiber network of 400 Ethernet connections.
 
-** AWS Cloud computing shared responsibility:
+AWS Cloud computing shared responsibility:
 - Responsibility varies from one service to another (IaaS, PaaS, SaaS)
 - IaaS
   - Customers manually deploys services like EC2 instances, S3 buckets etc
@@ -30,7 +30,7 @@ Amazon data centers within region are linked using high speed fiber network of 4
   - Other way is to use SaaS offerings available in cloud like cloud based mail etc...
   - *TODO*: Difference between PaaS and SaaS
  
-# AWS well architected framework:
+### AWS well architected framework:
 - It follows Six pillar design principles set to deliver services to end user
   - Operation excellence
   - Security
@@ -86,7 +86,7 @@ Amazon data centers within region are linked using high speed fiber network of 4
   - Security standards compliance: PCI DSS, GDPR compliance etc...
 - AWS service sprawl reduction - Remove unused resources those are running in background
 
-# Summary of Course:
+### Summary of Course:
 - AWS global infrastructure, shared responsibility models, pillars of well-architected framework and service fits
 - AWS CLI on Windows and Linux
 - Amazon Linux and the CLI, Powershell tools, Cloudshell, and AWS Outposts
