@@ -1,4 +1,4 @@
-* Day 1: Architecture & tools
+### Architecture & tools
 
 AWS Global infrastructure:
 - 200+ IT services available
@@ -68,7 +68,25 @@ Amazon data centers within region are linked using high speed fiber network of 4
   - HTTPS: To talk to service endpoints hosted on AWS
   - Network/Threat monitoring: GaurdDuty, CloudWatch network metrics to make sure everything working as expected
 - Compute requirements
+  - EC2 instances: Decide if we need to deploy EC2 instances manually, which requires us to setup full configuration. We need to take care of config updates, patches etc...
+  - Managed services: Paas services like AWS Lambda, which will have limited indirect VM configuration.
+  - Application containers: Elastic container service(ECS), Elastic container registry(ECR)
+  - Container clusters: Elastic kubernetes service
 - Storage requirements
-- Monitoring and Security requirements
+  - S3 bucket object storage: to store files, objects etc. By default comes with encryption
+  - Databases: NoSQL or SQL based on the requirement
+  - Security: Amazon Macie data classification, server side encryption with Amazon keys or customer managed keys
+- Monitoring and Security requirements: Continuous monitoring of the services deployed is utmost important.
+  - CloudWatch monitoring: to monitor deployed cloud services and take actions like increase/decrease resources, scale up or scale out etc
+  - CloudTrail auditing: helps to audit any unwanted actions performed etc...
+  - Amazon detective: It helps to identify potential security incidents and to investigate them
+  - Network ACLs: to control the traffic in and out of network VPCs
+  - Security groups: to control the traffic in and out of EC2 instances
+  - Web application Firewall (WAF): To protect web app from security threats like SQL injection etc...
+  - Security standards compliance: PCI DSS, GDPR compliance etc...
 - AWS service sprawl reduction - Remove unused resources those are running in background
 
+# Summary of Course:
+- AWS global infrastructure, shared responsibility models, pillars of well-architected framework and service fits
+- AWS CLI on Windows and Linux
+- Amazon Linux and the CLI, Powershell tools, Cloudshell, and AWS Outposts
