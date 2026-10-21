@@ -1,0 +1,73 @@
+# Data Storage Services
+
+Covers:
+- AWS transfer and Snow family services
+- Deploy and manage various database solutions like MySQL, Microsoft SQL Server, DynamoDB and DocumentDB
+- Create and attach an EBS volume and configure an Elastic File System
+
+### AWS Transfer:
+Steps to setup and transfer files to S3 over SFTP(SSH File transfer protocol)
+- Create a S3 bucket to host files, which is our target. ex: demo-bucket-1234 
+- Create an IAM Role to enable trust relationship. It enables users to perform transfer actions. 
+  Create a Role UserSFTPAccess for AWS EC2 Service and attach AmazonS3FullAccess policy, then create. Now update role using edit option to change it from EC2 to transfer.
+- Now Setup SFTP server. Create SFTP server using Transfer family service, choose S3 as domain.
+- Now we need to add users to SFTP server, without which we can't access it
+- Add user to create user(sftpUser) and attach to SFTP server. provide name, IAM Role created earlier, S3 bucket, SSH public key from client from where you want to access and transfer files.
+- Make connection to SFTP server from client using below command from command line
+  sftp -i <id_rsa_private_key> sftpUser@<sftp-end-point-name>
+- With this, you are authenticated and sftp session will be open (sftp>)
+- Now you should able to transfer files to S3 using sftp commands like put abc.txt
+- Verify it's availability in S3 bucket from AWS console
+
+
+### AWS Snow family:
+- This solves challenges of "Importing large amounts of data into AWS from on-premise" or vice-versa
+- data in terra or peta bytes
+- A physical device which is encrypted is shipped to on-premise, we can copy the entire data and ship it back to AWS. AWS technicians then copy them into an S3 bucket
+- Vice-versa can be done to import data from AWS to on-premise
+- AWS snow family contains, AWS snowcone, AWS snowball and AWS snowmobile
+
+AWS Snowcone:
+- smallest rack-mountable device in the snow family
+- SSD (14 TB) or HDD (8 TB)
+- Can login using 14 digit code present on AWS management console snowcone page
+- Data copied to device using an NFS mount point
+- Offline data transfer via physical device shipping or using AWS DataSync which is pre-installed.
+- 256-bit encryption for protection of data at rest
+- Anti-tampering via Trusted platform module (TPM)
+- secure erasure of data on the device after job completion using NIST guidelines
+
+AWS Snowball: In addition to what AWS snowcone does, snow ball does
+- "Edge compute optimized" option to process the data locally on-premises using AWS Lambda code
+- Download snowball edge client to unlock the device once it is powered up
+- Copy on-premises data to the device using the S3 GUI or NFS mount point
+
+AWS Snowmobile:
+- Used to import/export larger amounts of data
+
+AWS OpsHub is grafical user interface used to manage AWS Snowball devices. like unpack, configure, drag and drop services, monitoring device metrics etc...
+
+## AWS Database Capacity Planning:
+- Amount and frequency of data: How much data going to fill in and frequency of accessing it. 
+- Type of data: structured/ semi-structured/ un-structured
+- storage and database connection capacity: How many concurrent connections needed during peak or off-peak hours
+- Resiliency to failure: 
+  - server failure in active/active env, couple of servers always up and running. 
+  - plan to minimise the RTO to run things up and running as qucikly as possible. 
+  - do we have multiple database replicas like read replicas, read/write replicas.
+
+AWS Database types:
+- NoSQL Databases: Document DB or Dynamo DB in AWS cloud. semi or unstructured.
+- SQL Compliant databases through Relational Database service (RDS). It is structured schema
+- RDS creation allows you to choose database engine like Amazon Aurora, MySQL, Oracle, PostgreSQL, SQL server etc.
+- It also allow you to configure backups, snpashots, encryption etc
+
+- Monitor database usage patterns and receive notifications using CloudWatch
+- Size databases with extra storage, memory and compute power to accommodate unpredictable demand spikes
+- Consider the average concurrent number of connected users
+- consider the amount of stored data as well as data in and out via network daily
+- use provisioned IOPS storage(more writing means more I/O) vs magnetic storage(older and slow for more reading and less writing) to address busy disk I/O usage
+- Optimize database queries to reduce required compute power
+
+
+
