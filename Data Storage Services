@@ -69,5 +69,33 @@ AWS Database types:
 - use provisioned IOPS storage(more writing means more I/O) vs magnetic storage(older and slow for more reading and less writing) to address busy disk I/O usage
 - Optimize database queries to reduce required compute power
 
+RDS Proxy:
+- It's a managed service
+- It pools database connections to increase connection scalability
+- It also stores credentials managed by AWS secret manager
+- Reduces failover time with automatic database failover, no writing for DNS changes
 
+- TODO: Deploy MySQL RDS database and access it from MySQL workbench client
+- TODO: Deploy Microsoft SQL Server and access it from Microsoft SQL Management console
+- TODO: Deploy Dynamo DB 
+  - Dynamo DB is key value datastore deisgned for enormous workloads and very quick response times when searching for items that it stores
+  - designed to scale automatically during peak hours based on traffic
+- TODO: Deploy Document DB
+  - It's managed service on AWS, it's mongoDB compatible
+  - It can be accessed from MongoDB commnd line
+- EBS Volumes (Elastic block storage) 
+  - We can attach EBS volumes to EC2 instances
+  - Once attached, we have to initialize, partition and format the partition to use it.
+  - TODO: Explore options of creating a new volume under Elastic block store section within EC2 instances page
+  - TODO: create volumes and attach to EC2 instance, RDP into vm and verify disk details. 
+- Configuring EFS (Elastic File System)
+  - It uses NFS(network file system) protocol to read/write files into a mounted target.
+  - we can mount it on to linux system using commands of DNS or IP
+Explore AWS Cloud9 to create your own environment over cloud
 
+### Summary:
+- AWS Transfer, AWS Snow family and creating a snow family job
+- AWS database capacity planning and deploying and managing MySQL in AWS
+- Deploying and managing Microsoft SQL Server in AWS
+- Deploying DynamoDB and DocumentDB
+- EBS volumes, attaching volumes to an EC2 instance and configuring EFS
