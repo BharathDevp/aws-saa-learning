@@ -1,4 +1,4 @@
-Covers:
+eCovers:
 - Various ways to create and manage S3 buckets and their contents using the console, CLI and Powershell
 - Configure object storage tiers based on object accessibility requirements
 - Configure S3 bucket object lock, bucket policies, and the AWS Storage Gateway
@@ -31,4 +31,101 @@ Powershell:
 
 ### Uploading to buckets using
 Console:
-- 
+- Try creating folder and upload files into it. Play with access control and check all the options present
+CLI:
+- authenticate using "aws configure"
+- aws s3 cp c:\tmp s3://projects-east --recursive : Copy all the files within tmp folder to projects-east folder on s3 recursively.
+- aws s3 ls s3://projects-east : lists files in projects-east bucket
+- aws s3 mv s3://projects-east/budget4.txt s3://projects-east/Budgets/ : move file from one place to another place in s3
+
+Powershell:
+- get-command *bucket* : to list available commands/modules for s3
+- get-s3buckets
+- write-s3object -bucketname budgets-east -file Budget4.txt -CannedACLName Private
+- get-s3object -bucketname budgets-east : Lists all objects within budgets-east bucket
+- get-s3object -bucketname budgets-east 2022 : Lists all objects within 2022 folder of budgets-east bucket
+- remove-s3object -bucketname budgets-east -key Budget4.txt : remove an object from budgets-east bucket
+
+### Configuring S3 Storage tiers
+- It's nothing but assigning storage class to the objects
+- Standard: frequently access data, >=3 AZs
+- Intelligent-Tiering: Data with changing or unknown access patterns, >=3 AZs
+- Standard-IA: Infrequently accessed data (once a month) with milliseconds access, >=3 AZs
+- One Zone-IA: Recreatable, infrequently accessed data stored in single AZ with milliseconds access, 1 AZ
+- Glacier Instant Retrieval: Long lived archive date accesses once a quarter, >=3 AZs
+- aws s3 cp s3://budgets-east/2022/Budget1.txt s3://budgets-east/2022/Budget1.txt --storage-class GLACIER : Changes the storage class for an object through command
+
+### Enabling S3 Object Lock
+- Object lock feature can only be enabled while creating the new bucket only
+- Using console we can't specify object lock for the objects, we have to use AWS CLI, SDK or S3 REST API
+- these configurations applied to specific version of object 
+- object lock legal hold is nothing but can't delete the version of file
+
+### Configuring S3 bucket policies
+- Navigate to bucket's permissions tab and scroll to bucket policies 
+- We can make use of policy generator to generate policy or type in if we know the json syntax
+
+### AWS Storage Gateway
+- Provides on-premises access to scalable cloud storage
+- Use cloud storage locally with low network latency
+- It supports cloud backup
+- Existing services don't know they are talking to AWS resources
+
+AWS Storage Gateway Deployment:
+It can be deployed on 
+- on-premises VM:
+  - VMWare ESXi
+  - Microsoft Hyper-V
+  - Linux KVM
+- EC2 instance
+- Dedicated standalone physical hardware appliance
+
+AWS Storage Gateway Types:
+- S3 File Gateway
+  - Local cache of files stores as S3 bucket objects
+  - It allows on-premises access the content using SMB(used for windows) and NFS(used for Linux)
+  - S3 data can be exposed to other AWS services like Amazon Athena
+- FSx File Gateway
+  - Files stored in S3 bucket in cloud shared as on-premises SMB file share and accessble through it
+  - Since it appears as windows file share, it supports NTFS permissions and data deduplication 
+- Tape Gateway
+  - enables cloud backups
+  - presents itself as an on-premises iSCSI virtual tape library (VTL)
+  - stores virtual tapes in S3 and can be archived
+- Volume Gateway
+  - Presents itself as an on-premises block storage device through iSCSI
+  - stores volume data in S3
+  - Connects on-premises Linux and Windows servers to the volume using an iSCSI initiator
+
+Deploy AWS Storage Gateway:
+- Storage Gateway is applicance software or hardware based, it serves as a local file system cache for a variety of file offerings like tape library, shared folder or a disk volume. But in the end, storage is really backed in Amazon S3
+- TODO: Try creating FSx Gateway over EC2 instance
+
+### S3 Bucket Encryption using the GUI
+- Once bucket enabled with encryption, all the files that are going to upload post enablement encrypted automatically
+- Existing files won't be encrypted
+
+### S3 Bucket Encryption using the CLI
+- aws s3 cp Project_D.txt s3://projects-east : existing encryption applied automatically
+- aws s3 cp s3://projects-east/Project_E.txt s3://projects-east/Project_E.txt --sse AES256 : It enables encryption for file Project_E.txt though bucket level encryption is disabled.
+- aws s3 cp Project_F.txt s3://projects-east --sse AES256 : enable encryption for file while adding itself.
+
+### Content Delivery Netwroks (CDN)
+- CDN serves as cache for requested information from web apps
+- worldwide servers serve cached content to local users
+- It reduces network latency, and improves app response time
+AWS CloudFront
+- User requests content via a URL of CDN server
+- AWS maintains 410+ CDN servers globally
+- It data is not cached on CDN, then CDN forwards request to origin server
+- Data origin: S3, EC2, ELB, Media Services, API Gateway, on-premises data, HTTP Server
+- CloudFront has enhanced media streaming capabilities, software patch deployment etc...
+TODO: deploy AWS cloud front and check all options
+
+
+## Summary
+- Creating an S3 bucket and uploading to buckets using console, CLI and Powershell
+- Configuring S3 storage tiers, enabling object locks and configuring S3 bucket policies
+- storage gateway and it's deployment
+- S3 bucket encryption using GUI, CLI 
+- CDNs and deploying Amazon CloudFront
