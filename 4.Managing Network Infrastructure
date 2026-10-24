@@ -1,1 +1,72 @@
+Covers:
+- How VPCs and subnets can address cloud networking needs
+- Create VPCs and subnets using the console, CLI and powershell
+- Configure VPC DHCP and DNS Settings as well as subnet IP addressing
+- Create and assign Elastic IP addresses to provide public IP addressing for EC2 instances
 
+### VPC and Subnet
+- It's responsible for establishing new network or new VLAN or new subnet
+- allocated in IPv4 CIDR(classless inter domain routing) block
+- can also allocate IPv6 
+
+VPC Configuration:
+- subnets
+- DHCP options : DNS options, it will allow us to specify custom DNS resolutions options. If DHCP not set up, AWS uses it's own DNS server to resolve names to IP addresses
+- Network ACL for subnets
+- Route table
+- tags up to 50
+
+### Creating a VPC using GUI
+- Before creating a VPC in cloud, we need to know what kind of workloads or applications going to deploy and decide on a VPC, how many subnets needed, are we going to use default Amazon DNS server or do we need custom DNS etc...
+- We will be providing VPC name, subnets, no.of public and private subnets, 
+
+### Creating VPC using CLI
+- aws ec2 create-vpc --cidr-block 12.0.0.0/16 : Creates a VPC with identifier of 12.0
+- aws ec2 create-tags --resources <vpc-id> --tags Key=Name,Value=VPC2 : Adds name tag with VPC2 as value to VPC
+- aws ec2 create-subnet --vpc-id <vpc-id> --cidr-block 12.0.1.0/24 : Creates a subnet within VPC network with 12.0.1 identifier which is within 12.0 vpc identifier
+- aws ec2 modify-subnet-attribute --subnet-id <subnet-id> --map-public-ip-on-launch : Automatically assigns public IP to EC2 instances launched within this subnet.
+
+### Creating VPC using Powershell
+- get-command *vpc* : to list down vpc commands available from aws modules
+- New-EC2VPC -CidrBlock 13.0.0.0/16
+- get-ec2vpc : list al existing vpc
+- new-ec2tag -resourceid <vpc-id> -tag @{key="Name;Value="VPC3"}
+- new-ec2subnet -vpcid <vpc-id> -cidrblock 13.0.1.0/24
+- get-ec2subnet
+
+### Configuring VPC DHCP Options
+- For each VPC, DHCP Option set associated by default.
+- For DHCP option set, by default AmazonProvidedDNS will be associate, it can be customized and associate our own DNS server. 
+
+### Configuring VPC DNS Settings
+- We can create DHCP option set with custom DNS server and attach it to VPC
+- Open EC2 instance presnt within VPC and open command prompt
+- run ipconfig /all to check network configuration, it shows DNS server associated with old DHCP optionset 
+- to update it, run ipconfig /renew, it will load latest config from AWS
+
+### Subnetting Public IP Addressing
+- We can enable/disable automatic allocation of public IP to EC2 instances launched within subnet using subnet level configuration
+- And if enabled, public IP addresses are epheremal means changes every time instance rebooted/restarted, it would be problem if instance is running a web application and need to be accessed over interne
+- We have concept of Elastic IP to solve this problem
+
+### Configuring Elastic IP Addresses
+- using console, We can use Elastic IP address option under VPC section. We can create region and public IPv4 address pool, default one is Amazon's pool of IPv4 addresses. Then associate it to instance/network interface. It immediately effective for respective EC2 instance. After restarts also, it retains same IP address.
+- using CLI
+  - aws ec2 allocate-address : creates a public elastic IP
+  - aws ec2 describe-addresses: lists all public elastic IP addresses
+  - aws ec2 associate-address --instance-id <instance-id> --allocation-id <elastic-ip-id>
+- using Powershell
+  - get-module -list *aws* : List down AWS modules
+  - get-awscredential -listprofiledetail : lists available credential which we can use to authenticate to AWS
+  - initialize-awsdefaultconfiguration -profilename admin1 : uses admin1 credentials to start session
+  - new-ec2address
+  - get-ec2address
+  - new-ec2tag -resourceid <elastic-ip-id> -tag @{Key="Name";Value="EIP2"}
+  - Register-EC2Address -InstanceId <instance-id> -AllocationId <elastic-ip-id>
+  - Unregister-EC2Address -AssociationId <association-id>
+  - remove-EC2Address -AllocationId <elastic-ip-id>
+
+Course Summary:
+- VPC and subnet creation using console, CLI and Powershell
+- VPC DHCP options and DNS Settings
+- Subnet public IP addressing and elastic IP address configuration using console, CLI and Powershell
