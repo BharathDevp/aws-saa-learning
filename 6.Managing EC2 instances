@@ -27,3 +27,11 @@ Powershell:
 ### Deploying Windows instance using Console, CLI and Powershell
 
 ### Managing EC2 instance Hibernation using console, CLI and Powershell
+- When you hibernate a machine, the current state of operating system is saved to hibernation file. When you resume from hibernation mode, you are exactly where you left off.
+- you have to enable/disable hibernation mode on EC2 instances while creating/launching them. you cannot do it on the already created/existed ones
+- to launch an instance in hibernation mode, we need to encrypt root volume on device.
+CLI:
+- aws ec2 stop-instances --instance-ids <instance-id> --hibernate $true
+Powershell:
+- Stop-EC2Instance -InstanceId <instance-id> -Hibernate $true
+### Monitoring EC2 instance performance
