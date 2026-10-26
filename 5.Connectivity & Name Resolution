@@ -1,1 +1,208 @@
+Covers:
+- when to use VPC peering and how to enable it using console
+- service endpoint connectivity
+- Configure a site-to-site as well as a client-VPN connection into the AWS cloud
+- Configure various network gateways
+- Configure various DNS zone settings using Route 53 followed by deploying DNS firewall
+
+
+### VPC Peering
+- Allow link VPCs directly together
+- We can connect VPCs within same AWS account or diffrent AWS accounts
+- We can establish relationship between VPCs within or between AWS regions
+- each VPC can have more than one VPC peerings
+- AWS Cloud technician needs to allow the peering request from initiator
+- With VPC peering in place, two resources in different VPCs can talk to each other using their respective Private IP addresses
+- Peering connections are not transitive means if VPC1 peering to VPC2 and VPC2 peering to VPC3, VPC1 can't communicate with VPC3 directly.
+- Flow
+  - Create VPCs and Subnets
+  - Create peering configuration
+  - Accept peering request
+  - Adjust route tables for both VPCs with CIDR of other VPCs
+- two VPCs in VPC peering should not have overlapping CIDR range
+- If Network ACLs or Security groups on VPCs block communication across VPCs, adding VPC peering does not establish connection unless Network ACL and security group restrictions are relaxed
+
+### Enabling VPC peering
+- TODO: Try it using console by following above flow.
+
+### AWS Service Endpoints
+- It's just the URL for an entry point into specific AWs service like S3, DynamoDB etc...
+- Allow programmatic API/CLI connectivity to a service using URL
+- Some AWS services such as DynamoDB use regional endpoints e.g: https://dynamo.db.us-east-1.amazonaws.com
+- Some AWS services, such as IAM have endpoints that do not reference the region
+  e.g: https://iam.amazonaws.com
+- Some AWS services such as EC2 support endpoints with and without regions
+- Some AWS services in specific regions support Federal information processing standard (FIPS) endpoints, which require at least TLS 1.2 HTTP connections e.g: https://iam-fips.amazonaws.com
+
+### VPC Endpoints
+- Allow private subnet resources access to AWS services not configured with public internet access
+- Are not the same as VPC peering
+- VPC Endpoint types:
+  - Interface
+  - Gateway Load balancer
+  - Gateway
+
+### VPC peering vs VPC Endpoints
+- VPC peering allows direct inter-VPC connectivity to all resource types, where as VPC Endpoints allows direct connectivity to specific resource with endpoints configured
+- VPC peering requires the creation of route table entries to allow traffic between VPCs, where as VPC Endpoints do not require Route table entries configuration
+- In VPC peering, IP address ranges between peered VPCs cannot overlap, where as in VPC Endpoint, it allows IP address range overlap is not an issue
+
+### AWS VPN(Virtual private network) Solutions
+- It establishes encrypted point to point IPSec network tunnel
+- in this case from client(laptop, mobile etc) to resource on AWS
+- VPC appliance can be hardware or software and is defined by Virtual private gateway in AWS, so that VPN connection can be established from clients
+- It provides a public IP address
+- PSK or PKI certificate authentication
+- Create virtual private gateway in AWS for accepting traffic over VPN
+- AWS Site-to-Site VPN: 
+  - Idea is to link on-premises network with AWS cloud
+  - as part of it, we can create a resource called customer gateway on AWS, it represents customer on-premises VPN appliance (hardware/software based). We need to configure public IP addresses of VPN here.
+  - We also need to create virtual private gateway on AWS which represents AWS VPN appliance.
+  - With site-to-site VPN, VPN client is not needed to connect to on-premise VPN appliance. route tables adjusted to connect to on-premise VPN which can comminicate with resource on AWS
+  - Flow:
+    - Create customer gateway in AWS
+    - Create AWS virtual private gateway 
+    - Create VPN connection linking the two gateways
+- AWS Client VPN:
+  - We can have individual VPN client device to establish an encrypted tunnel with AWS cloud
+  - For this to happen, on AWS side we need to configure an AWS VPN client Endpoint
+  - plus few more configuration
+
+### Deploying Site-to-Site VPN COnnection to AWS
+### Configuring Client VPN endpoint
+### Manaing Route Tables
+- Route tables contains one or more routes to control traffic flow
+- We can create and associate route tables to VPCs and Subnets
+
+### AWS Direct Connect and AWS PrivateLink
+- Another way to have direct connection between on-premise network to AWS cloud
+- It sounds like site-to-site VPN, but there is a difference. site-to-site VPN goes over internet, but DirectConnect does not.
+- It's dedicated private network circuit for a single customer(1Gbps-100Gbps)
+- Hosted connection stems from an AWS Direct Connect Partner (50 Mbps - 100 Mbps)
+- It Links on-premises network directly to AWS VPC
+- Why do we go Direct connect:
+  - Predictable bandwidth compared to internet
+  - Increased security compared to internet
+- With AWS Direct connect
+  - on-premises router must be configured
+  - OSI layer 2 point to point connection
+  - Virtual interfaces
+  - you can split one circuit into multiple interfaces
+  - interfaces can connect to private or public AWS resources
+- Provisioning Direct Connect
+  - Submit connection request
+  - Receive AWS confirmation within 72 hours
+  - provide info to co-location on-premise provider
+  - configure on-premises router
+
+### Configuring NAT Gateway
+- It allows the instaces who do not have public IPs access the internet.
+- It's similar to home Wifi network, which front ends for all home smart devices to access internet
+- but a NAT gateway will not allow connections to be initiated from internet coming into AWS
+- Internet gateway allows both sides to and from the internet, that's difference between NAT and internet gateway
+- With just NAT gateway enabled on a subnet, even if EC2 instance allocated with public IP, you will not able to make RPD connection over internet unless VPN or Direct connect are configured.
+
+### Configuring an Internet Gateway
+- It allows instaces allocated with public IPs access the internet in and out. 
+- It allows from internet and to internet access to EC2 instance
+- we can call subnet as public subnet if internet gateway enabled for it.
+- in both NAT and internet gateways, we need to have routing table entry to allow traffic like 0.0.0.0/0 which is default IPv4 route
+- we can allocate public IP to instance using Elastic IPs
+
+### Using an Egress-only Internet Gateway
+- It used to allow outbound IPv6 traffic to the internet
+- It's like NAT gateway used to allow IPv4 traffic into internet from instances
+- So, similar to NAT, it does not allow traffic to come from internet
+- route table configuration is needed to make sure outbound traffic reaches internet
+- ::/0 is the default IPv6 route
+- nslookup and set type=aaaa : steps into nameserver lookup and sets to IPv6 type, providing any address will give you IPv6 addresses associated with it
+- from console without nslookup, we can get try pinging website using IPv6 using ping -6 www.google.com
+
+### DNS and Route 53
+- Its name resolution service
+- it supports resolution for both IPv4 and IPv6 addresses
+- DNS zone is nothing but zone of IP addresses
+- DNS recursion is nothing but if an address could not find resolution with a specific DNS server, it would go to another DNS server
+- DNS caching, it happens both at DNS server side and on client side as well with TTL configured.
+
+FQDN: Fully qualified domain name
+- ex: www.quick24x7.com
+- .com : represents top level domain
+- .quick24x7 : second level or sub domain
+- www : host
+- Resolves to IPv4 or IPv6 address using a DNS 'A' or 'AAAA' record
+- IPv4 are 32 bit and IPv6 are 128 bit addresses
+
+DNS record types:
+- A      : resolves FQDN to an IPv4 address
+- AAAA   : resolves FQDN to an IPv6 address
+- CNAME  : Alias record, points to the domain name not IP address
+- MX     : Mail exchange record
+- PTR    : Reverse lookup record like if we want to know name/address using IP
+- TXT    : Arbitrary data stored in a DNS record
+
+Amazon Route 53:
+- Managed DNS Service
+- Name resolution
+  -  AWS services
+  - Services outside AWS
+- Allows DNS domain name registration
+- Allows DNS name transfer
+
+Amazon Route 53 health checks:
+- Application reachability verification
+- Endpoint connectivity:
+  - TCP
+  - HTTP
+  - HTTPS
+- Traffic not routed to unhealthy enpoints
+
+### Creating Route 53 Hosted zones and Record sets
+### Registerig a domain name using Route 53
+- If you have private hosted zone, you can define any domain name, it's need not to be unique gloablly as it is only accessed within your account
+- But when you want to create domain name which should be available globally, it has to be registered.
+- domain registraion page will show you, avaialable dns names that matches our sub domain name and their cost.
+- once new domain name registered, it will be automatically added to hosted zones list as public
+- once registered, you can start adding records
+
+### Route 53 traffic policies
+- Granular control of DNS name resolution and resources users get redirected to
+- can improve application availability
+- can reduce network latency when connecting to resources
+Weighted Rule:
+- Multiple hosted resources for the same app
+- DNS record weight value determines the amount of traffic received relative to other weight values
+Failover Rule:
+- Active-Passive failover
+- second resource accepts traffic if first resource is unavailable
+- you will define primary and secondary records and specify failover policy
+Geoloction Rule:
+- If you want to take requests coming from a country and route them to a perticular destination
+- It's based on origin of client DNS queries which might based on a country
+Latency Rule:
+- Used when the same service is running in different AWS data centers
+- Provides least network latency path DNS answer to clients
+Multivalue answer rule:
+- we can have multiple DNS records all pointing to same backend app
+- you can have upto 8 potential query results returned to clients
+- out of 8, randomly selected result returned to client as response
+- it does not replace load balancing, it's another way to spread out the traffic across multiple instances of same app
+Geoproximity Rule:
+- specify resource location - AWS region, latitude and longitude coordinates
+- DNS client query answers will route users to the resource nearest them
+
+### Deploying DNS firewall
+- it's to mitigate DNS exfiltration attacks.
+- With exfiltraction, malicious users gain control of systems so that when those systems send DNS queries, DNS query can also contain sensitive data.
+- We can create rule groups, and rule within to block/allow specific domains. once done, they can attached to VPC.
+- you can also create domain list by entering list of domain manually or bulk upload from s3 bucket. this domain list can be added to rule group.
+
+### Course Summary
+- Configuring VPC peering, AWS service endpoints and VPN solutions
+- Site-to-Site and client VPN configuration and deploying route tables
+- AWS direct connect, provisioning, and AWS private link
+- NAT and internet gateways, egress-only internet gateways
+- Route 53 and hosted zones, registering a DNS domain name with Route 53 and traffic policies
+- Deploying DNS firewall
+
 
