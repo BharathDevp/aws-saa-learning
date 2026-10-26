@@ -1,1 +1,100 @@
+Covers:
+- Discover how to resize EC2 instances using the console and CLI, followed by configuring auto-scaling to support application workload
+- Review when Amazon Fargate, EMR and Batch should be used
+- Discuss when various configurations of ElasticCache shoule be used
+- Review AWS data analytics and ingestion services such as Amazon Athena and AWS Glue
 
+
+### Changing the EC2 instance sizing using console and CLI
+- We can change the instance type for example from t2.micro to t2.small when instance is in stopped state
+- aws ec2 stop-instances --instance-ids <instance-id>
+- aws ec2 describe-instance-attribute --instance-id <instance-id> --attribute instanceType
+- aws ec2 describe-instance-types
+- aws ec2 describe-instance-types --instance-types t2.micro
+- aws ec2 describe-instance-types --filters Name=hibernation-supported,Values=true --query InstanceTypes[].InstanceType
+- aws ec2 modify-instance-attribute --instance-id <instance-id> --instance-type "{\"Value\":\"t2.micro\"}"
+
+### Auto scaling
+- Horizontal scaling
+  - scale-out: adding new instances when traffic increases
+  - scale-in : removing instances when traffic reduces
+- Automated capacity adjustment
+- Auto scaling can be applied to
+  - EC2 instances
+  - Elastic contianer service (ECS)
+  - Amazon DynamoDB
+  - Amazon Aurora database replicas
+- predictive scaling, applies to EC2 auto scaling groups. scale proactively based on historical activity patterns
+- TODO: Create autoscaling groups, configuration templates
+
+### AWS Serverless Compute
+- Managed services (PaaS)
+- service will provided with selected software installed in it.
+- you won't be managing infrastructure meaning creating/managing ec2 instance and underlying infra
+- no software installation, no patches
+- automates instance deployment and management
+- ex: Amazon Fargate, Elastic MapReduce, Amazon Batch
+
+Amazon Batch:
+- Batch job submission - for data analytics or transformation etc
+- when batch job is submitted, compute and memory power adjusted manually or automatically
+- Jobs scheduled to run on EC2, Spot instances or Amazon Fargate
+Amazon Fargate:
+- it's serverless compute engine for app containers
+- it focusses on underlying compute infrastructure for containers
+- EKS deals at container level, but Fargate deal at container compute level
+- No need to manually manage underlying compute
+- Autoscaling - sets resource power to meet needs
+- Works with EKS and ECS
+Amazon Elastic MapRedude (EMR):
+- Managed cluster platform that allows distributed processing
+- Used for jobs where single server won't be sufficient and want to spread out tasks of jobs across multiple servers
+- Used for Bid data analysis
+- EMR can be integrated with EC2 or EKS
+- it's based on Apache Hadoop, Hadoop is a Java solution designed for distributed processing of large datasets across multiple servers
+
+### Amazon ElasticCache
+- database in-memory caching service
+- it supports HA and replication
+- there are two engine options to select from while creating ElasticCache
+  - Memcached
+    - simple kv storage
+    - No built in replication
+  - Redis
+    - can supports more complex data types beyond value pairs (hashes, lists, bitmaps etc)
+    - supports built in replication, node failover (HA), backup and restore
+
+### AWS Data Analytics and Ingestion Services
+- Helps to deal with extremely large data sets processing like in peta bytes of data
+- what we need to do to ingest, import and stream
+- Big data : existing solution introduces processing challenges for larged amounts of data and rate of data ingestion in case of streaming 
+- Analysis and resultant insights - compute power required
+- short and long term data retention
+
+Amazon Athena:
+- big data service in AWS
+- Big data ANSI(American national standards institute) SQL querying service for data stored in S3
+- it's managed service
+- Data can be structured, semi-structured or structure less
+- Queries can be executed in parallel across nodes for the utmost speed in query results
+
+Amazon Quicksight:
+- A Business intelligence(BI) solution that results in data visualizations and dashboards
+- Is useful for forecasting trends and conducting what-if scenarios
+- it supports natural language queries against data from many different sources
+
+Amazon kinesis:
+- Used to analyze and process streaming data
+- processes data in real time instead of after collection
+- it's a managed service supporting automatic scaling
+
+AWS Glue:
+- It's a serverless ETL service
+- consists of a crawler, ETL service and metadata data catalog
+- Can integrate with Amazon Athena
+
+AWS Lake formation services:
+- Data lake: central, large scale secure data repositories storing data in it's original and transformed-for-analysis form
+- to configure data lake, define data sources and security policies
+- it's designed to integrate with other AWS analysis services like Amazon Athena
+- 
