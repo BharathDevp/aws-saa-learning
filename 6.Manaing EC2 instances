@@ -1,0 +1,29 @@
+Covers:
+- How to deploy Windows and Linux EC2 instances using console, CLI and Powershell
+- Remotely manage windows instances using RDP and linux instances using ssh
+- Manage EC2 instance hibernation mode followed by monitoring instance performance
+
+### Deploying Linux instance
+Using
+console:
+CLI:
+- aws ec2 run-instances --image-id <ami-id> --count 1 --instance-type t2.micro --key-name KeyPair1 --security-group-ids <sg-id> --subnet-id <subnet-id>
+- aws ec2 create-tags --resources <instance-id> --tags Key=Name,Value=Linux2
+Powershell:
+- get-module -list *aws* : returns powershell module if avialable
+- set-awscredential -accesskey $accesskey -secretkey $secretkey -storeas admin
+- get-awscredential -listprofiledetail : returns existing aws credentials
+- initialize-awsdefaultconfiguration -profilename admin1 : initializes AWS session with given credential/profile
+- New-EC2Instance -ImageId <image-id> -MinCount 1 -MaxCount 1 -KeyName KeyPair1 -SecurityGroupId <sg-id> -InstanceType m1.small -SubnetId <subnet-id>
+- get-ec2instance
+- (get-ec2instance).instances
+- (get-ec2instance).instances | get-member -type property : to list available properties 
+- (get-ec2instance).instances.tags
+- New-EC2Tag -ResourceId <instance-id> -Tag @{Key="Name",Value="Linux3"}
+
+### Managing EC2 instance through SSH
+- ubuntu is the default username to ssh into ubuntu server
+
+### Deploying Windows instance using Console, CLI and Powershell
+
+### Managing EC2 instance Hibernation using console, CLI and Powershell
