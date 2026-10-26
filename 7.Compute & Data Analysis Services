@@ -97,4 +97,8 @@ AWS Lake formation services:
 - Data lake: central, large scale secure data repositories storing data in it's original and transformed-for-analysis form
 - to configure data lake, define data sources and security policies
 - it's designed to integrate with other AWS analysis services like Amazon Athena
-- 
+
+Course Summary:
+- EC2 instance sizing using console/CLI, enabling auto scaling, and AWS serverless compute
+- ElasticCache and usage of Memcached and Redis engines
+- AWS data analytics and ingestion services
