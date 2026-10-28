@@ -1,0 +1,156 @@
+Covers:
+- When to use Lambda and step functions
+- When to use AWS Web application firewall
+- When to use AWS Secrets Manager to allow centralised code access such as database connection strings etc
+- Deploy a message queue
+- Working with Docker on Linux and AWS container services such as ECS, ECR and EKS
+- Create a custom instance AMI, review AWS speech services
+- Work with launch templates to automate instance deployment
+
+## Amazon App services
+###Application Development services:
+- There are various managed services available for developers. they don't need to deploy vms and install software within it. 
+- serverless and scalable software developer solutions
+
+#### Amazon Simple Queue Service (SQS):
+- An application message queueing service: send, store and read messages
+- Enables app component decoupling means no two software components need to be online to communicate with each other, they can send a message to SQS, when second service comes online, it picks it and processes
+- Provides standard and FIFO queues
+
+#### AWS Lambda:
+- It's a serverless cloud service that runs code (Java, Go, Powershell, Node.js, C#, Python etc)
+- Write code in the Lambda console
+- Upload a code ZIP file or container image
+- Code is triggered by an event, such as:
+  - File is uploaded to S3 bucket
+  - Website link is clicked
+  - New Database record is created
+
+#### Amazon API Gateway:
+- Scalable serverless solution that can process API calls
+- it sits between client and actual API service/server
+- it's the entry point for all API calls
+- it takes care of API Authorization and access control
+- it also does API call traffic management and throttling
+
+#### Amazon Cognito:
+- Allows developers to add user sign-up and sign-in fucntionality to an app
+- it is scalable and supports numerous identity providers like Google, Amazon, Facebook and Apple etc
+
+### AWS Web application Firewall
+- Intercepts requests to HTTP-based apps and APIs
+- Protects from common threats such as SQL injection, cross-site scripting
+- Uses OWASP Top 10 pre-configured rule sets
+- We can use WAF with EC2 instances, Amazon API Gateway, CloudFront distribution and Application Load Balancer
+- Features:
+  - Web traffic filtering of IP addresses, HTTP headers, HTTP body etc. It works at layer 7
+  - It can do rate limiting and can block bot traffic
+  - Fraud control, preventing login page attacks
+  - Security metrics monitoring using CloudWatch
+- AWS Firewall Manager ensures compliance with standard security rules, centrally manage multiple WAF deployments within or between AWS accounts
+
+### AWS Secrets Manager
+- All the credentials can be stored in Secrets manager
+- They can be encrypted, replicated, rotated or changed periodically
+- We can create various types scrects like usename, password or API key type
+
+### Deploying a Message Queue
+- TODO: Create Message queue and check all configuration
+### Application Containers
+- Logical app isolation boundary
+- Entire app or single app component
+- Running containers are based on container images
+- Images contain software and settings for running a container
+- A container is a runtime instance of an image
+- It contains, runtime, code to run, dependencies, configuration
+- App2Container service available in AWS assists with Application migration. It's a command line tool, migrates Java/.NET app into a container
+
+### Installing Docker on Linux
+- sudo apt-get install docker.io : installs docker package on ubuntu
+- sudo docker: checks if docker available or not
+- sudo service docker status
+
+### Amazon Elastic Container Service (ECS)
+- Run containerized applications in AWS
+- it supports docker compose which allows to run multiple containers together
+- manages app availability and scaling
+- Features:
+  - ECS can be integrated with Amazon Fargate which takes care of capacity to run the application and scaling
+  - Amazon ECS anywhere
+  - ECR (Elastic container registry) is centralised repository of registries
+  - ECS takes care of version update of user container
+- ECR, ECS Cluster, ECS Task( it contains the details of apps to run)
+
+### Deploying containerized application\
+- Create a cluster, task definition with one or more simple containers. tag task to cluster and check it's status
+### Using Amazon Elastic Container Registry (ECR)
+- Allows to create a registry to host application containers
+- TODO: Explore creation of registry and pushing images into it
+### Deploying EKS cluster
+- it provides a way to deploy, manage and scale application containers
+- pre-requisite is to create a IAM role with EKS policies attached to it
+- For creating a cluster, we can make use of CloudFormation service available in AWS. It takes an existing template to create cluster with VPC attached to it.
+- aws eks create-cluster --region us-east-1 --name EKSCluster1 --role-arn <eks-role-arn> --resource-vpc-config subnetIds=<subnet-1>,<subnet-2>,securityGroupIds=<sg-id>
+- aws eks describe-cluster --region us-east-1 --name EKSCluster1 --query cluster.status 
+- aws eks update-kubeconfig --region us-east-1 --name EKSCluster1 : It adds kube config to cluster so that it supports kubectl commands
+- For creating a node in eks cluster, we nees to have an IAM role with required policies attached to it. Role must be created with use case as EC2 and AmazonEKSWorkerNodePolicy, AmazonEC2ContainerRegistryReadOnly policies attached to it
+- Under compute section of EKS cluster, create a node group with selected iam role and with no.of nodes.
+- TODO: deploy an EKS using above process
+
+### Managing AMI(Amazon Machine Images)
+- Create an AMI out of existing EC2 instance, launch a new instance from AMI. check various options of user created AMIs
+
+### AWS Step Fucntion
+- while we can use Lambda functions to customise the code related to web application, But by using step function what we can do is make lambda code less complex.
+- we can take decisions like what should happen, error handling, retrying failed states, running tasks in parallel, we can remove them from lambda functions and instead handle them with step functions
+- AWS designer is avalable to add resources and add events
+- TODO: Explore step function to create sample and run it
+
+### Amazon Speech Services
+- Natural language processing: A form of AI allowing computers to meaningfully process text and voice data
+- Speech related services use cases:
+  - Voice to text conversion
+  - web app customer service chatbots
+  - text sentiment analysis and spam detection
+Amazon Comprehend:
+- Derive insights from various text resources
+- PII detection and redacting
+- Multiple spoken language support
+
+Amazon Polly:
+- a cloud based text to speeach service. ex: GPS navigation which tells when to take left/right with voice
+- provides broad spoken language support
+- includes male and female voices
+- Sample flow
+  - Source data gets read into Lambda function which is then sent to Amazon Polly
+  - Amazon Polly sends voice audio to Lambda function, and then for storage in an S3 bucket
+
+### Hosting a Static Web Application
+- If you have static content that can gets displayed on a web app using HTML and JS then this could be useful
+- TODO: Definite try, Create an S3 bucket with public access. enable statuc web app hosting. upload files into it. define default page to load. make S3 public by definiing a polcy. go to static web hosting tab and click on website link to access it.
+- Since S3 can store static objects, they can be accessed when we make it public with static web app enablement. It does not run anything in background.
+
+### Deploy AWS App Runner Web App
+- It allows developers to either take code that they have written or even a container , an application container, and they can basically App runner host it
+- That means App Runner helps to deploy the code, auto scaling, load balancing
+- TODO: try it from console.
+
+### Creating Launch Templates
+- These are used to launch instances quickly
+- It will have all the configuration needed for launching instance
+- TODO: try out from console
+
+### Create AWS Lambda Function
+- These are basically code that executes in cloud
+- it's serverless type of service
+- Once Lambda function created, we need to add a trigger which initiates lambda function. For example, we can create a trigger with S3, whenever an object added/created. 
+- TODO: try it from console
+
+
+Course Summary:
+- Amazon app services, Web application firewall and Secret manageer
+- Deploying message queue, application containers, installing docker on linux
+- Amazon ECS, Containerized application deployment, container registry, EKS and AMI
+- Create AWS step function and Amazon speech services
+- Hosting a static web application, deploying a web app, creating launch templates, AWS Lambda fcuntions.
+- 
