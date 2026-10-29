@@ -1,0 +1,6 @@
+Covers:
+- How AWS supports standard security concepts such as defence-in-depth and least privilege
+- Review the network OSI model and network protocols and ports, followed by examining a network traffic capture
+- identify common AWS network security threats,enable threat detection with AWS GaurdDuty and review AWS security compliance programs
+- work with security controls to identify and protect sensitive data using Amazon Dacie
+
