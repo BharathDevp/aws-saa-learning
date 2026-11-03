@@ -1,1 +1,43 @@
+Covers:
+- How Cryptography provides data integrity and confidentiality
+- Review Public Key Infrastructure (PKI) hierarchy and how certificates can be used to secure AWS services
+- Work with AWS Key management service (KMS) to manage encryption keys and AWS Certificate manager to create a Private Certification Authority (CA) and to issue PKI certificates
+- Renew certificates, enable HTTPS and encrypt an EBS volume
+
+### Cryptography and AWS Security
+Keys and Encryption:
+- Symmetric encryption: It's a single key based encryption. same key used for both encryption and decryption. generally called as a secret key
+- Asymmetric encryption: It require two keys. a related public and private keys. public key is used to encrypt the data and private key is used to decrypt the data. 
+
+Encryption - Confidentiality:
+- Confidentiality means protection of data at rest i.e storage data and protection of data in transit i.e over network
+- a plaintext is feeded into a encryption algorithm along with a key(which key to use based on symmstric/asymmetric encryption used), it generated Ciphertext which is encrypted data.
+- periodic key rotation is important to avoid compromised usage by unathorized or expired user accounts
+
+Hashing - Integrity:
+- We can also hash data that is stored on disk or data over network
+- Encryption for confidentiality and Hashing for integrity
+- Provides secure method of strong passwords
+- for example, /etc/shadow on Linux OS stores passwords of users in hash format. whenever a user tries to login by prompting password, hash of password compared with same in /etc/shadow file. if it matches, user allowed to login otherwise denied.
+- we can also use hashing to detect file system modifications
+- Hashing can be used along with encryption as well.
+- it's not reversible unlike encryption
+- plaintext is fed to one way algorithm and it results hash or message digest.
+
+KMS:
+- Cloud based service that integrates with many other AWS services to provide requried keys
+- You need to generate two keys in KMS even for symmstric encryption
+
+Cryptography and Storage:
+- At disk device level, there are self encrypting drives called SEDs that provide protection for data at rest
+- OS encryption, it provides various options like Windows encrypting file system EFS which can encrypt individual files and fodlers if enabled. and other is Microsoft BitLocker which encrypts entire disk volumes opposed to individual files
+- On AWS side, AWS S3 bucket encyption to encrypt files in S3 bucket. ECR container image encryption to encrypt images. AWS RDS database encryption to encrypt database replicas
+
+AWS and Encryption:
+- AWS Certification Manager (ACM)
+- AWS Key Management Service (KMS)
+- S3 bucket encryption using AES 256
+- VPN encrypted tunnels
+- HTTP encrypted connections
+
 
