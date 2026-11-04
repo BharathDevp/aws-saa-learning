@@ -40,4 +40,28 @@ AWS and Encryption:
 - VPN encrypted tunnels
 - HTTP encrypted connections
 
+### Public Key Infrastructure (PKI):
+- It's Hieracchy of digital security certificates (chain of trust). It means Certificate authority is at the top of hierachy, who distributes certificates. It may issue via subordnates CA. 
+- Public CAs are trusted by devices, whether it's windows, linux, macos, desktop, laptop,smartphone etc whatever it is, within the OS there is a list of trsuted public CAs. So when your device connects to bank website over https, if the bank is having certificate digitally signed with public CA, your device will trust that certificate because it trusts public CA chain of trust.
+
+PKI Certificate Issurance: PKI can be issued to
+- individual users : using email address
+- individual devices: using FQDN of device
+- software: 
+
+Certificate Issurance:
+- Wildcard certificates: *.mydomain.com, with this we can install one certificate on multiple websites ending with mydomain.com.
+- Extended domain validation: enhanced CA due diligence against certificare requester like valid company name or not etc..
+- Code signing certificates to digitally sign code
+
+PKI Certificate life cycle:
+Certificate signing request -> Issuance -> Use -> Revocation -> renewal/expiry
+
+Certificate Templates:
+- pre-defined templates used to issue certificates
+- they utilize encryption and signing algorithms
+- they use certificate usage constraints
+
+### Creating an AWS KMS key
+
 
