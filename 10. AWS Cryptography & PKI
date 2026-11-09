@@ -66,7 +66,58 @@ Certificate Templates:
 ### Creating an AWS KMS key
 - AWS Managed keys: These are created and managed by AWS. they gets created automatically when any new AWS service created and attched to respective service.
 - Customer managed keys: We can create and manage keys under this section
-TODO: Create a KMS key from console and try to attach to an EBS volume. we can only attach to new EBS volumes.
-### Managing Encryption Keys with KMS
+- Asymmetric key creation has two key usage options:
+  - encrypt and decrypt: use the key only to encrypt and decrypt data
+  - sign and verify: key pairs for digital signing. use the private key for signing and public key for verification (specs like RSA_2048, RSA_4096 etc used for signing and verification)
 
+TODO: Create a KMS key from console and try to attach to an EBS volume. we can only attach to new EBS volumes.
+
+### Managing Encryption Keys with KMS
+TODO: Create Asymmetric sign and verify key and manage
+
+### Configuting key rotation and access policies
+- Asymmetric keys or imported keys won't have automatic way to configure key rotation
+- symmetric keys will have option to rotate keys
+- cli command to check whether key rotation enabled/disabled for specific key
+  aws kms get-key-rotation-status --key-id <key-id>
+- cli command to disable/enable key rotation for specific key
+  aws kms disable-key-rotation --key-id <key-id>
+  aws kms enable-key-rotation --key-id <key-id>
+
+### AWS Certificate Manager
+- it's cloud based PKI solution
+- It's managed service, we need not take care of underlying EC2 instance deployment etc, we can work with public and private PKI certificates and manage them
+
+Certificate usage:
+- Authenticating users/devices
+- Encrypting email messages
+- Digitally signing email messages
+- verifying the validity of digital security tokens
+- encrypting data at rest
+- securing HTTPS connectivity to web application
+
+### Deploying a Private Certificate Authority
+- a CA purpose is to issue PKI certificates, or to create a subordinate CA which in turn will issue certificates
+- With a private CA, chain of trust is very important, since it is private CA, it is not trusted by any devices
+- Devices will have a list of trusted public CAs whos certicates they will trust
+- we have to install root key of private CA on devices to trust CA certificates
+TODO: Create a private CA from console. install it. download the CA root key/certificate and import to certificate manager on windows to add to list of trusted CAs.
+
+### Requesting a Private certificate
+TODO: explore options and create it.
+
+### Requesting a Public Certificate
+TODO: explore options and create it
+TODO: explore options of adding it to cloudFront CDN and how it works
+
+### Encrypting an EBS volume
+- it provides protection by encryption of data at rest
+- TODO: Create an encrypted EBS volume, attach it to EC2 instance whcih is enabled with EBS encryption. and also add encrypted ebs volume while creating EC2 instance
+
+### Course Summary
+- Examined how to use AWS encryption keys and PKI services to secure network connectivity and protect data at rest
+- Done using Cryptography and AWS security, PKI security, and KMS key creation
+- Managing key lifecycle settings, AWS certificate manager and configuring private CA
+- Private and public key creation
+- Renewing PKI certificates, HTTPS and applicaton load balancer and EBS volume encryption
 
