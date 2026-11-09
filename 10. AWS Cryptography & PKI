@@ -25,6 +25,7 @@ Hashing - Integrity:
 - plaintext is fed to one way algorithm and it results hash or message digest.
 
 KMS:
+- It's AWS managed service which allows us to create and manage encryption keys
 - Cloud based service that integrates with many other AWS services to provide requried keys
 - You need to generate two keys in KMS even for symmstric encryption
 
@@ -63,5 +64,9 @@ Certificate Templates:
 - they use certificate usage constraints
 
 ### Creating an AWS KMS key
+- AWS Managed keys: These are created and managed by AWS. they gets created automatically when any new AWS service created and attched to respective service.
+- Customer managed keys: We can create and manage keys under this section
+TODO: Create a KMS key from console and try to attach to an EBS volume. we can only attach to new EBS volumes.
+### Managing Encryption Keys with KMS
 
 
