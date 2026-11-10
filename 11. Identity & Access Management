@@ -1,1 +1,44 @@
+Covers:
+- How AWS provides IAM capabilities followed by creating IAM user accounts using console, CLI and Powershell
+- Configure user password policies and test sign-in
+- Manage IAM groups using console, CLI and Powershell followed by working with IAM policies and roles
+- Enable user MFA to harden user sign-ins
 
+### AWS IAM
+- deals with getting user's devices software authenticated to AWS and making sure they have access to the resources through permission assignments
+- we are talking about users being autheticated, and those users being added to groups and perhaps policies being attached to the groups
+- we can also work with roles, roles are needed when you need to work with a service/software to access something
+- We can attach policies to users or groups
+
+Authentication and Authorization:
+Authentication:
+- proof of identity
+- single factor using username and password
+- multi factor using username, password and smartcard
+Authorization:
+- controlled access to apps and AWS resources
+- policies are collection of permissions
+- custom or built-in policies assigned to users, groups or roles
+
+### Managing IAM Users using the GUI
+TODO: Create an IAM user and explore all the configuration of it.
+
+### Managing IAM Users using CLI
+- aws iam help : help content
+- aws iam create-user --user-name bharath
+- aws iam get-user --user-name bharath
+- aws iam list-users
+- aws iam create-login-profile --user-name bharath --password P@$$word12345 --password-reset-required
+- aws iam update-login-profile --user-name bharath : We have to run this to apply profile to user
+- aws iam change-password --old-password <old-password> --new-password <new-password> : It changes password of currently logged in IAM user
+
+### Configuring AWS User Password Policy
+- It can be updated using account settings tab within IAM users section
+- TODO: modify IAM password policy and try login
+
+### Signing in an AWS IAM User
+- In powershell, we can configure access and secret keys as follows
+  - $accesskey="<access-key>"
+  - $secretkey="<secret-key>"
+  - set-awscredential -accesskey $accesskey -secretkey $secretkey -storeas bharath : stores credentials with profile name as bharath
+  - initialize-awsdefaultconfiguration -profilename bharath
