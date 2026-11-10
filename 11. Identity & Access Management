@@ -42,3 +42,33 @@ TODO: Create an IAM user and explore all the configuration of it.
   - $secretkey="<secret-key>"
   - set-awscredential -accesskey $accesskey -secretkey $secretkey -storeas bharath : stores credentials with profile name as bharath
   - initialize-awsdefaultconfiguration -profilename bharath
+
+### Managing IAM User groups using GUI
+TODO: Create a group and assign policies and test
+
+### Managing IAM User group using CLI
+- aws iam create-group --group-name app3admins
+- aws iam list-groups
+- aws iam list-groups --query "Groups[].GroupName"
+- aws iam get-group --group-name app3admins
+- aws iam add-user-to-group --user-name bharath --group-name app3admins
+- aws iam list-groups-for-user --user-name bharath
+- aws iam delete-group --group-name app3admins
+- aws iam remove-user-from-group --group-name app3admins --user-name bharath
+
+
+### Configuring IAM policies
+- Try out attaching policies to users, groups, roles. Also can check permitted actions under policy simulator
+
+### COnfiguring IAM Roles
+- These are used when we want to provide permissions to a software entity like AWS resource. not users or groups
+- Try creating a role and attach it to instance etc
+
+### Multi-Factor Authentication MFA
+### Enabling MFA for an IAM User
+
+### Course Summary:
+- IAM Users using GUI, CLI
+- User password policy configuration and sign-in
+- IAM Groups creation using GUI, CLI
+- IAM Policies, roles, policy simulator, enabling multifactor authentication
