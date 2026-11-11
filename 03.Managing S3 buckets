@@ -1,4 +1,4 @@
-eCovers:
+Covers:
 - Various ways to create and manage S3 buckets and their contents using the console, CLI and Powershell
 - Configure object storage tiers based on object accessibility requirements
 - Configure S3 bucket object lock, bucket policies, and the AWS Storage Gateway
