@@ -117,9 +117,9 @@ Deploy AWS Storage Gateway:
 AWS CloudFront
 - User requests content via a URL of CDN server
 - AWS maintains 410+ CDN servers globally
-- It data is not cached on CDN, then CDN forwards request to origin server
+- If data is not cached on CDN, then CDN forwards request to origin server
 - Data origin: S3, EC2, ELB, Media Services, API Gateway, on-premises data, HTTP Server
-- CloudFront has enhanced media streaming capabilities, software patch deployment etc...
+- CloudFront has enhances media streaming capabilities, software patch deployment etc...
 TODO: deploy AWS cloud front and check all options
 
 
