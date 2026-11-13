@@ -1,1 +1,8 @@
+A Directory Service is central repository of network configuration items such as user accounts
+Covers:
+- How authentication and authorization are related and how this relates to AWS resource access
+- AWS specific directory service options followed by joining and EC2 instance to AWS Directory service
+- Create AWS managed AD user and group accounts
+- Deploy simple AD and review how identity federation provides a central trusted identity provider for applications
+
 
