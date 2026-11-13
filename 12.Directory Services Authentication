@@ -5,4 +5,59 @@ Covers:
 - Create AWS managed AD user and group accounts
 - Deploy simple AD and review how identity federation provides a central trusted identity provider for applications
 
+### Directory Services
+- It's centralized network configuration database that hosted on one or more servers
+- Ex: Microsoft active directory domain services (AD DS) which can store settings for user accounts, groups, devices joined to the domain, application configuration information... A Domain controller in this type of domain environment is a Microsoft server that has a copy or a replica of AD DS database.
 
+AWS Simple AD:
+- it is not true Microsoft AD, it uses Samba 4 compatible directory service
+- Supports small upto 2000 objects and large upto 20,000 objects
+- Does not support MFA, domain trust, powershell and AD recycle bin
+
+AWS Managed Microsoft AD:
+- It's AWS managed service. it's true Microsoft AD DS, but hosed in AWS
+- We need not to setup physical server with Windows OS and need not to configure Active directory
+- Use standard AD management tools
+- we can join EC2 and RDS instances to domain
+
+AWS AD Connector:
+- it let's you link your on-premises active directory environment to AWS
+- Why do we need this? For example, when a user makes a request for an app running in cloud/on-premise, AWS redirects those requests to on-premises AD.
+- One connector configuration needed for each on-premises AD domain
+- Users continue to use existing credentials even when accessing cloud resources
+
+### AWS Congnito user pools
+- Helps users to add sign up and sign in capabilities to their app
+
+### Joining EC2 instance to an AWS Directory service
+- TODO: Deploy a Microsoft directory service, attach it to windows EC2 instance. try login to EC2 instance with AD credentials
+
+### Creating AWS Managed AD users and groups
+- TODO: For the Microsoft created on Cloud. Login to the EC2 instace to which AD attached, go to server manager and install remote server adminstration tools. Later verify windows part of domain or not(control panel -> system and security -> see the name of the computer). Try creating AD groups and users by accessing AD adminstration tools
+
+### Configuring AWS Simple AD
+- TODO: Create a Simple AD. create an EC2 windows instance and join it to Simple AD domain. Create a role with SSM access. Launch windows instance and login with AD adminstrator credentials. check whether machine joined domain or not. install remote server administration tools, create users and groups by accessing adminstation tools
+
+### Identity Federation
+- Uses a centralized trusted authenticator
+- Authentication capabitlities are removed from individual apps, they rely on centralized authenticator for authentication
+- A trusted authenticator or identity provider can span organizations
+- It's nothing but options available in most of the modern day apps to sign in with google, microsoft, facebook accounts instead of creating a new sign up account
+
+Identity and Resource providers:
+- Identity provider (IDP), this is centralized authentication or directory service, it can be on-premises or cloud based. Cloud based is like using Amazon ID, google, facebook cloud IDs. on-premise are Microsoft ADFS etc...
+- A service provider (SP)/ resource provider (RP) is an app that trusts the IDP. 
+
+Identity Federation flow:
+- user accesses app
+- App redirects user to identity provider for authentication
+- User authenticated successfully, server digitally signs token containing claims. Claims are considered to be a form of attribute based access control(ABAC)
+- user is authorized to use app
+
+AWS Identity solutions:
+- Single sign on (SSO)
+- AWS Security token service (STS): it is solution to allow temporary credentials to be used for IAM users
+
+Course Summary:
+- Authentication and Authorization, directory service overview, joining EC2 to a domain
+- Creating AWS managed AD users and groups, simple AD and federation authentication
